@@ -4,16 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pemesanan Oleh-Oleh Yasa Shop (Transfer ke Rekening Mandiri atas nama Bambang Yulistriono 1350021365851)</title>
+
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; background:#fff7e6; }
     h1 { color:#d35400; }
-    form, .report, .keranjang { background:#ffffff; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1); margin-bottom:20px; }
+    form, .report, .keranjang {
+      background:#ffffff; padding:20px; border-radius:10px;
+      box-shadow:0 0 10px rgba(0,0,0,0.1); margin-bottom:20px;
+    }
     label { display:block; margin-top:10px; font-weight:bold; }
-    input, select { width:100%; padding:8px; margin-top:5px; border-radius:5px; border:1px solid #ccc; }
+    input, select {
+      width:100%; padding:8px; margin-top:5px;
+      border-radius:5px; border:1px solid #ccc;
+    }
     table { width:100%; border-collapse: collapse; margin-top:20px; }
     table, th, td { border:1px solid #ccc; }
     th, td { padding:10px; text-align:left; }
-    button { padding:10px 15px; background:#e67e22; border:none; color:white; font-weight:bold; border-radius:5px; cursor:pointer; margin-top:15px; }
+    button {
+      padding:10px 15px; background:#e67e22; border:none;
+      color:white; font-weight:bold; border-radius:5px;
+      cursor:pointer; margin-top:15px;
+    }
     button:hover { background:#d35400; }
   </style>
 </head>
@@ -81,6 +92,7 @@
   <button type="button" onclick="tambahKeKeranjang()">Tambah Produk ke Keranjang</button>
 </form>
 
+<!-- KERANJANG -->
 <div class="keranjang">
   <h2>Keranjang Produk</h2>
   <table>
@@ -97,6 +109,7 @@
   <button type="button" onclick="simpanKeLaporan()">Submit</button>
 </div>
 
+<!-- REPORT -->
 <div class="report">
   <h2>Laporan Pesanan</h2>
 
@@ -114,10 +127,14 @@
     <tbody></tbody>
   </table>
 
-  <button onclick="downloadCSV()">Download CSV</button>
+  <h3 id="grandTotal">Total yang harus dibayar: 0 IDR</h3>
+
+  <button onclick="kirimWhatsApp()">Kirim Rekap ke WhatsApp</button>
 </div>
 
+
 <script>
+/* ======================== DATA PRODUK ======================== */
 const produkList = {
   "Abon Cokro Manis 100gr": 36000,
   "Abon Cokro Pedas 100gr": 38000,
@@ -143,6 +160,7 @@ const produkList = {
   "Wedang Bandrek": 15000
 };
 
+/* ======================== ISI DROPDOWN PRODUK ======================== */
 const produkSelect = document.getElementById("produk");
 for (let p in produkList) {
   let opt = document.createElement("option");
@@ -151,17 +169,19 @@ for (let p in produkList) {
   produkSelect.appendChild(opt);
 }
 
+/* ======================== HITUNG TOTAL ======================== */
 function hitungTotal() {
   const harga = produkList[produkSelect.value] || 0;
   const jumlah = parseInt(document.getElementById("jumlah").value) || 1;
-  document.getElementById("total").value =
-    (harga * jumlah).toLocaleString("id-ID");
+  document.getElementById("total").value = (harga * jumlah).toLocaleString("id-ID");
 }
 
 produkSelect.onchange = hitungTotal;
 document.getElementById("jumlah").oninput = hitungTotal;
 
+/* ======================== KERANJANG ======================== */
 let keranjang = [];
+let totalSemua = 0;
 
 function tambahKeKeranjang() {
   hitungTotal();
@@ -191,6 +211,7 @@ function updateTabelKeranjang() {
   });
 }
 
+/* ======================== SIMPAN KE LAPORAN ======================== */
 function simpanKeLaporan() {
   if (keranjang.length === 0) {
     alert("Keranjang masih kosong!");
@@ -214,9 +235,14 @@ function simpanKeLaporan() {
       <td>${item.total.toLocaleString("id-ID")}</td>
     `;
     tbody.appendChild(tr);
+
+    totalSemua += item.total;
   });
 
-  // ================= KIRIM DATA KE GOOGLE SPREADSHEET =================
+  document.getElementById("grandTotal").innerText =
+    "Total yang harus dibayar: " + totalSemua.toLocaleString("id-ID") + " IDR";
+
+  // Kirim ke Spreadsheet
   fetch("https://script.google.com/macros/s/AKfycbywWqm73OQDS8kCvCMmQnFIfXBO-cfj2ePFDpJOB9K6C1dP-NxykA1zfSS7JdPldFnd4A/exec", {
     method: "POST",
     mode: "no-cors",
@@ -234,23 +260,29 @@ function simpanKeLaporan() {
   alert("Pesanan berhasil disimpan dan dikirim ke Spreadsheet!");
 }
 
-function downloadCSV() {
-  let csv = "Nama,HP,Kabupaten,Produk,Jumlah,Total\n";
-
+/* ======================== KIRIM WHATSAPP ======================== */
+function kirimWhatsApp() {
   const rows = document.querySelectorAll("#tabelReport tbody tr");
+  if (rows.length === 0) {
+    alert("Belum ada laporan pesanan!");
+    return;
+  }
+
+  let pesan = `REKAP PESANAN YASA SHOP\n----------------------\n`;
+
   rows.forEach((r) => {
-    const cols = r.querySelectorAll("td");
-    const data = Array.from(cols).map((c) => c.innerText);
-    csv += data.join(",") + "\n";
+    const t = r.querySelectorAll("td");
+
+    pesan += `Nama: ${t[0].innerText}\nHP: ${t[1].innerText}\nKab: ${t[2].innerText}\nProduk: ${t[3].innerText}\nJumlah: ${t[4].innerText}\nTotal: ${t[5].innerText}\n----------------------\n`;
   });
 
-  const blob = new Blob([csv], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
+  pesan += `TOTAL BAYAR: ${totalSemua.toLocaleString("id-ID")} IDR\n`;
+  pesan += `\nMohon diproses. Terima kasih.`;
 
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "report_pesanan.csv";
-  a.click();
+  const nomorWA = "628156816150";
+  const url = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`;
+
+  window.open(url, "_blank");
 }
 </script>
 
