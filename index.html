@@ -1,140 +1,210 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pemesanan Oleh-Oleh Yasa Shop (Transfer ke Rekening Mandiri atas nama Bambang Yulistriono 1350021365851)</title>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pemesanan Oleh-Oleh Yasa Shop</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; background:#fff7e6; }
-    h1 { color:#d35400; }
-    form, .report, .keranjang {
-      background:#ffffff; padding:20px; border-radius:10px;
-      box-shadow:0 0 10px rgba(0,0,0,0.1); margin-bottom:20px;
+    :root{
+      --bg:#fff7e6;
+      --card:#ffffff;
+      --text:#222;
+      --accent:#e67e22;
+      --accent-dark:#d35400;
+      --muted:#666;
     }
-    label { display:block; margin-top:10px; font-weight:bold; }
-    input, select {
-      width:100%; padding:8px; margin-top:5px;
-      border-radius:5px; border:1px solid #ccc;
+    body{
+      font-family:Arial, sans-serif;
+      margin:20px;
+      background:var(--bg);
+      color:var(--text);
     }
-    table { width:100%; border-collapse: collapse; margin-top:20px; }
-    table, th, td { border:1px solid #ccc; }
-    th, td { padding:10px; text-align:left; }
-    button {
-      padding:10px 15px; background:#e67e22; border:none;
-      color:white; font-weight:bold; border-radius:5px;
-      cursor:pointer; margin-top:15px;
+    h1{ color:var(--accent); margin-bottom:8px; }
+    .topbar{ display:flex; gap:10px; align-items:center; margin-bottom:14px; flex-wrap:wrap; }
+    .toggle{
+      margin-left:auto;
+      display:flex; gap:8px; align-items:center;
     }
-    button:hover { background:#d35400; }
+
+    .card{
+      background:var(--card);
+      padding:18px;
+      border-radius:10px;
+      box-shadow:0 0 10px rgba(0,0,0,0.08);
+      margin-bottom:20px;
+    }
+    label{ display:block; margin-top:10px; font-weight:600; }
+    input[type="text"], input[type="number"], select, textarea{
+      width:100%; padding:8px; margin-top:6px; border-radius:6px; border:1px solid #ccc;
+      box-sizing:border-box;
+    }
+    table{ width:100%; border-collapse:collapse; margin-top:12px; }
+    th,td{ padding:10px; border:1px solid #ddd; text-align:left; vertical-align:middle; }
+    th{ background:#f7f7f7; font-weight:700; }
+    .btn{
+      padding:9px 14px; background:var(--accent); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:700;
+    }
+    .btn:hover{ background:var(--accent-dark); }
+    .muted{ color:var(--muted); font-size:0.95rem; }
+    .small-btn{ padding:6px 8px; border-radius:6px; border:none; cursor:pointer; font-weight:700; }
+    .danger{ background:#e74c3c; color:white; }
+    .outline{ background:transparent; border:1px solid #ccc; color:var(--text); }
+    .flex{ display:flex; gap:10px; align-items:center; }
+    .right{ margin-left:auto; }
+    .tiny{ font-size:0.85rem; color:#444; }
+
+    /* Dark mode */
+    body.dark{
+      --bg:#121212;
+      --card:#1e1e1e;
+      --text:#eee;
+      --accent:#ff9d4d;
+      --accent-dark:#ff8a1f;
+      --muted:#bdbdbd;
+    }
+    body.dark th{ background:#2b2b2b; }
+
+    /* responsive */
+    @media (max-width:720px){
+      .topbar{ flex-direction:column; align-items:flex-start; }
+      .toggle{ margin-left:0; }
+    }
   </style>
 </head>
 <body>
 
-<h1>Form Pemesanan Oleh-Oleh Yasa Shop (Transfer ke Rekening Mandiri atas nama Bambang Yulistriono 1350021365851)</h1>
+  <div class="topbar">
+    <h1>Pemesanan Oleh-Oleh Yasa Shop</h1>
+    <div class="toggle">
+      <label class="tiny">Mode Gelap</label>
+      <button id="darkToggleBtn" class="small-btn outline">Toggle</button>
+    </div>
+  </div>
 
-<form id="orderForm">
-  <label>Nama</label>
-  <input type="text" id="nama" required />
+  <!-- FORM PEMESANAN -->
+  <div class="card">
+    <h2>Form Pemesanan</h2>
 
-  <label>No HP</label>
-  <input type="text" id="hp" required />
+    <form id="orderForm" onsubmit="return false;">
+      <label>Nama</label>
+      <input type="text" id="nama" required />
 
-  <label>Kabupaten/Kota (Jawa Tengah)</label>
-  <select id="kabupaten" required>
-    <option value="">-- Pilih --</option>
-    <option>00 - PROVINSI</option>
-    <option>01 - CILACAP</option>
-    <option>02 - BANYUMAS</option>
-    <option>03 - PURBALINGGA</option>
-    <option>04 - BANJARNEGARA</option>
-    <option>05 - KEBUMEN</option>
-    <option>06 - PURWOREJO</option>
-    <option>07 - WONOSOBO</option>
-    <option>08 - MAGELANG</option>
-    <option>09 - BOYOLALI</option>
-    <option>10 - KLATEN</option>
-    <option>11 - SUKOHARJO</option>
-    <option>12 - WONOGIRI</option>
-    <option>13 - KARANGANYAR</option>
-    <option>14 - SRAGEN</option>
-    <option>15 - GROBOGAN</option>
-    <option>16 - BLORA</option>
-    <option>17 - REMBANG</option>
-    <option>18 - PATI</option>
-    <option>19 - KUDUS</option>
-    <option>20 - JEPARA</option>
-    <option>21 - DEMAK</option>
-    <option>22 - SEMARANG</option>
-    <option>23 - TEMANGGUNG</option>
-    <option>24 - KENDAL</option>
-    <option>25 - BATANG</option>
-    <option>26 - PEKALONGAN</option>
-    <option>27 - PEMALANG</option>
-    <option>28 - TEGAL</option>
-    <option>29 - BREBES</option>
-    <option>71 - KOTA MAGELANG</option>
-    <option>72 - KOTA SURAKARTA</option>
-    <option>73 - KOTA SALATIGA</option>
-    <option>74 - KOTA SEMARANG</option>
-    <option>75 - KOTA PEKALONGAN</option>
-    <option>76 - KOTA TEGAL</option>
-  </select>
+      <label>No HP</label>
+      <input type="text" id="hp" placeholder="contoh: 0812xxxx" required />
 
-  <label>Produk</label>
-  <select id="produk" required></select>
+      <label>Kabupaten/Kota (Jawa Tengah)</label>
+      <select id="kabupaten" required>
+        <option value="">-- Pilih --</option>
+        <option>00 - PROVINSI</option>
+        <option>01 - CILACAP</option>
+        <option>02 - BANYUMAS</option>
+        <option>03 - PURBALINGGA</option>
+        <option>04 - BANJARNEGARA</option>
+        <option>05 - KEBUMEN</option>
+        <option>06 - PURWOREJO</option>
+        <option>07 - WONOSOBO</option>
+        <option>08 - MAGELANG</option>
+        <option>09 - BOYOLALI</option>
+        <option>10 - KLATEN</option>
+        <option>11 - SUKOHARJO</option>
+        <option>12 - WONOGIRI</option>
+        <option>13 - KARANGANYAR</option>
+        <option>14 - SRAGEN</option>
+        <option>15 - GROBOGAN</option>
+        <option>16 - BLORA</option>
+        <option>17 - REMBANG</option>
+        <option>18 - PATI</option>
+        <option>19 - KUDUS</option>
+        <option>20 - JEPARA</option>
+        <option>21 - DEMAK</option>
+        <option>22 - SEMARANG</option>
+        <option>23 - TEMANGGUNG</option>
+        <option>24 - KENDAL</option>
+        <option>25 - BATANG</option>
+        <option>26 - PEKALONGAN</option>
+        <option>27 - PEMALANG</option>
+        <option>28 - TEGAL</option>
+        <option>29 - BREBES</option>
+        <option>71 - KOTA MAGELANG</option>
+        <option>72 - KOTA SURAKARTA</option>
+        <option>73 - KOTA SALATIGA</option>
+        <option>74 - KOTA SEMARANG</option>
+        <option>75 - KOTA PEKALONGAN</option>
+        <option>76 - KOTA TEGAL</option>
+      </select>
 
-  <label>Jumlah</label>
-  <input type="number" id="jumlah" min="1" value="1" required />
+      <label>Produk</label>
+      <select id="produk" required></select>
 
-  <label>Total Harga</label>
-  <input type="text" id="total" readonly />
+      <label>Jumlah</label>
+      <input type="number" id="jumlah" min="1" value="1" required />
 
-  <button type="button" onclick="tambahKeKeranjang()">Tambah Produk ke Keranjang</button>
-</form>
+      <label>Total Harga</label>
+      <input type="text" id="total" readonly />
 
-<!-- KERANJANG -->
-<div class="keranjang">
-  <h2>Keranjang Produk</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Produk</th>
-        <th>Jumlah</th>
-        <th>Total</th>
-      </tr>
-    </thead>
-    <tbody id="keranjangBody"></tbody>
-  </table>
+      <div style="margin-top:12px;" class="flex">
+        <button type="button" class="btn" onclick="tambahKeKeranjang()">Tambah ke Keranjang</button>
+        <button type="button" class="small-btn outline right" onclick="kosongkanForm()">Reset Form</button>
+      </div>
 
-  <button type="button" onclick="simpanKeLaporan()">Submit</button>
-</div>
+      <p class="muted" style="margin-top:8px;">
+        Transfer ke Rekening Mandiri atas nama Bambang Yulistriono 1350021365851
+      </p>
+    </form>
+  </div>
 
-<!-- REPORT -->
-<div class="report">
-  <h2>Laporan Pesanan</h2>
+  <!-- KERANJANG -->
+  <div class="card">
+    <h2>Keranjang</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Produk</th>
+          <th>Harga</th>
+          <th>Jumlah</th>
+          <th>Total</th>
+          <th class="center">Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="keranjangBody"></tbody>
+    </table>
 
-  <table id="tabelReport">
-    <thead>
-      <tr>
-        <th>Nama</th>
-        <th>HP</th>
-        <th>Kabupaten</th>
-        <th>Produk</th>
-        <th>Jumlah</th>
-        <th>Total</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+    <div style="margin-top:12px;" class="flex">
+      <div class="muted">Jumlah item: <span id="countItems">0</span></div>
+      <div class="right">
+        <button class="btn" onclick="simpanKeLaporan()">Submit Pesanan (Buat Invoice)</button>
+      </div>
+    </div>
+  </div>
 
-  <h3 id="grandTotal">Total yang harus dibayar: 0 IDR</h3>
+  <!-- REPORT -->
+  <div class="card">
+    <h2>Laporan Pesanan</h2>
+    <table id="tabelReport">
+      <thead>
+        <tr>
+          <th>Invoice</th>
+          <th>Nama</th>
+          <th>HP</th>
+          <th>Kabupaten</th>
+          <th>Produk</th>
+          <th>Jumlah</th>
+          <th>Total</th>
+          <th class="center">Aksi</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
-  <button onclick="kirimWhatsApp()">Kirim Rekap ke WhatsApp</button>
-</div>
+    <h3 id="grandTotal">Total yang harus dibayar: 0 IDR</h3>
 
+    <button class="btn" onclick="kirimWhatsApp()" style="margin-top:10px;">
+      Kirim Rekap ke WhatsApp
+    </button>
+  </div>
 
 <script>
-/* ======================== DATA PRODUK ======================== */
+/* ===================== DATA PRODUK ===================== */
 const produkList = {
   "Abon Cokro Manis 100gr": 36000,
   "Abon Cokro Pedas 100gr": 38000,
@@ -160,130 +230,223 @@ const produkList = {
   "Wedang Bandrek": 15000
 };
 
-/* ======================== ISI DROPDOWN PRODUK ======================== */
+/* ===================== INISIALISASI UI ===================== */
 const produkSelect = document.getElementById("produk");
 for (let p in produkList) {
-  let opt = document.createElement("option");
+  const opt = document.createElement("option");
   opt.value = p;
-  opt.textContent = `${p} - ${produkList[p].toLocaleString("id-ID")} IDR`;
+  opt.textContent = `${p} - ${produkList[p].toLocaleString('id-ID')} IDR`;
   produkSelect.appendChild(opt);
-}
-
-/* ======================== HITUNG TOTAL ======================== */
-function hitungTotal() {
-  const harga = produkList[produkSelect.value] || 0;
-  const jumlah = parseInt(document.getElementById("jumlah").value) || 1;
-  document.getElementById("total").value = (harga * jumlah).toLocaleString("id-ID");
 }
 
 produkSelect.onchange = hitungTotal;
 document.getElementById("jumlah").oninput = hitungTotal;
 
-/* ======================== KERANJANG ======================== */
+function hitungTotal(){
+  const harga = produkList[produkSelect.value] || 0;
+  const jumlah = parseInt(document.getElementById("jumlah").value) || 1;
+  document.getElementById("total").value = (harga * jumlah).toLocaleString('id-ID');
+}
+
+/* ===================== STATE ===================== */
 let keranjang = [];
-let totalSemua = 0;
+let laporan = [];
 
-function tambahKeKeranjang() {
-  hitungTotal();
+/* ===================== INVOICE ===================== */
+function generateInvoice(){
+  const today = new Date();
+  const y = today.getFullYear();
+  const mm = String(today.getMonth()+1).padStart(2,'0');
+  const dd = String(today.getDate()).padStart(2,'0');
+  const key = `lastInvoice-${y}${mm}${dd}`;
 
+  let last = parseInt(localStorage.getItem(key) || '0', 10);
+  last++;
+  localStorage.setItem(key, String(last));
+
+  return `INV-${y}${mm}${dd}-${String(last).padStart(4,'0')}`;
+}
+
+/* ===================== KERANJANG ===================== */
+function tambahKeKeranjang(){
   const produk = produkSelect.value;
-  const jumlah = parseInt(document.getElementById("jumlah").value);
+  if (!produk) return alert("Pilih produk terlebih dahulu");
+
+  const jumlah = parseInt(document.getElementById("jumlah").value) || 1;
   const harga = produkList[produk];
   const total = harga * jumlah;
 
-  keranjang.push({ produk, jumlah, total });
-
+  keranjang.push({ produk, harga, jumlah, total });
   updateTabelKeranjang();
 }
 
-function updateTabelKeranjang() {
+function updateTabelKeranjang(){
   const tbody = document.getElementById("keranjangBody");
-  tbody.innerHTML = "";
+  tbody.innerHTML = '';
 
-  keranjang.forEach((item) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${item.produk}</td>
-      <td>${item.jumlah}</td>
-      <td>${item.total.toLocaleString("id-ID")}</td>
+  keranjang.forEach((item, i) => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${item.produk}</td>
+        <td>${item.harga.toLocaleString('id-ID')}</td>
+        <td>${item.jumlah}</td>
+        <td>${item.total.toLocaleString('id-ID')}</td>
+        <td class="center">
+          <button class="small-btn danger" onclick="hapusItemKeranjang(${i})">✖</button>
+        </td>
+      </tr>
     `;
-    tbody.appendChild(tr);
   });
+
+  document.getElementById("countItems").innerText = keranjang.length;
 }
 
-/* ======================== SIMPAN KE LAPORAN ======================== */
-function simpanKeLaporan() {
-  if (keranjang.length === 0) {
-    alert("Keranjang masih kosong!");
-    return;
-  }
+function hapusItemKeranjang(i){
+  keranjang.splice(i, 1);
+  updateTabelKeranjang();
+}
 
-  const nama = document.getElementById("nama").value;
-  const hp = document.getElementById("hp").value;
-  const kab = document.getElementById("kabupaten").value;
+function kosongkanForm(){
+  document.getElementById("orderForm").reset();
+  document.getElementById("total").value = '';
+}
 
-  const tbody = document.querySelector("#tabelReport tbody");
+/* ===================== SIMPAN KE LAPORAN ===================== */
+function simpanKeLaporan(){
+  if (keranjang.length === 0) return alert("Keranjang kosong!");
 
-  keranjang.forEach((item) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${nama}</td>
-      <td>${hp}</td>
-      <td>${kab}</td>
-      <td>${item.produk}</td>
-      <td>${item.jumlah}</td>
-      <td>${item.total.toLocaleString("id-ID")}</td>
-    `;
-    tbody.appendChild(tr);
+  const nama = document.getElementById("nama").value.trim();
+  const hp = document.getElementById("hp").value.trim();
+  const kab = document.getElementById("kabupaten").value.trim();
 
-    totalSemua += item.total;
+  if (!nama || !hp || !kab) return alert("Lengkapi data pemesan!");
+
+  const invoice = generateInvoice();
+
+  keranjang.forEach(item => {
+    laporan.push({
+      invoice,
+      nama,
+      hp,
+      kab,
+      produk: item.produk,
+      jumlah: item.jumlah,
+      total: item.total
+    });
   });
 
-  document.getElementById("grandTotal").innerText =
-    "Total yang harus dibayar: " + totalSemua.toLocaleString("id-ID") + " IDR";
-
-  // Kirim ke Spreadsheet
-  fetch("https://script.google.com/macros/s/AKfycbywWqm73OQDS8kCvCMmQnFIfXBO-cfj2ePFDpJOB9K6C1dP-NxykA1zfSS7JdPldFnd4A/exec", {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      nama: nama,
-      hp: hp,
-      kabupaten: kab,
-      pesanan: keranjang
-    })
-  });
+  // kirim ringkasan ke Google Script
+  try {
+    fetch("https://script.google.com/macros/s/AKfycbywWqm73OQDS8kCvCMmQnFIfXBO-cfj2ePFDpJOB9K6C1dP-NxykA1zfSS7JdPldFnd4A/exec", {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        invoice,
+        nama,
+        hp,
+        kabupaten: kab,
+        pesanan: keranjang.map(i => ({
+          produk: i.produk, jumlah: i.jumlah, total: i.total
+        }))
+      })
+    });
+  } catch(e){}
 
   keranjang = [];
   updateTabelKeranjang();
-  alert("Pesanan berhasil disimpan dan dikirim ke Spreadsheet!");
+  renderLaporan();
+  kosongkanForm();
+
+  alert("Pesanan disimpan. Invoice: " + invoice);
 }
 
-/* ======================== KIRIM WHATSAPP ======================== */
-function kirimWhatsApp() {
-  const rows = document.querySelectorAll("#tabelReport tbody tr");
-  if (rows.length === 0) {
-    alert("Belum ada laporan pesanan!");
-    return;
-  }
+/* ===================== LAPORAN ===================== */
+function renderLaporan(){
+  const tbody = document.querySelector("#tabelReport tbody");
+  tbody.innerHTML = '';
 
-  let pesan = `REKAP PESANAN YASA SHOP\n----------------------\n`;
-
-  rows.forEach((r) => {
-    const t = r.querySelectorAll("td");
-
-    pesan += `Nama: ${t[0].innerText}\nHP: ${t[1].innerText}\nKab: ${t[2].innerText}\nProduk: ${t[3].innerText}\nJumlah: ${t[4].innerText}\nTotal: ${t[5].innerText}\n----------------------\n`;
+  laporan.forEach((r, i) => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${r.invoice}</td>
+        <td>${r.nama}</td>
+        <td>${r.hp}</td>
+        <td>${r.kab}</td>
+        <td>${r.produk}</td>
+        <td>${r.jumlah}</td>
+        <td>${r.total.toLocaleString('id-ID')}</td>
+        <td class="center">
+          <button class="small-btn danger" onclick="hapusBarisLaporan(${i})">🗑</button>
+        </td>
+      </tr>
+    `;
   });
 
-  pesan += `TOTAL BAYAR: ${totalSemua.toLocaleString("id-ID")} IDR\n`;
-  pesan += `\nMohon diproses. Terima kasih.`;
+  const total = laporan.reduce((s, r) => s + r.total, 0);
+  document.getElementById("grandTotal").innerText =
+    "Total yang harus dibayar: " + total.toLocaleString("id-ID") + " IDR";
+}
+
+function hapusBarisLaporan(i){
+  if (!confirm("Hapus baris ini?")) return;
+  laporan.splice(i, 1);
+  renderLaporan();
+}
+
+/* ===================== WHATSAPP ===================== */
+function kirimWhatsApp(){
+  if (laporan.length === 0) return alert("Belum ada pesanan.");
+
+  const grouped = {};
+
+  laporan.forEach(r => {
+    if (!grouped[r.invoice]) {
+      grouped[r.invoice] = {
+        invoice: r.invoice,
+        nama: r.nama,
+        hp: r.hp,
+        kab: r.kab,
+        items: [],
+        total: 0
+      };
+    }
+    grouped[r.invoice].items.push(r);
+    grouped[r.invoice].total += r.total;
+  });
+
+  let pesan = `REKAP PESANAN YASA SHOP\n==============================\n`;
+
+  for (let inv in grouped) {
+    const g = grouped[inv];
+    pesan += `Invoice: ${g.invoice}\nNama: ${g.nama}\nHP: ${g.hp}\nKab: ${g.kab}\n`;
+    g.items.forEach(it => {
+      pesan += `- ${it.produk} x${it.jumlah} = ${it.total.toLocaleString('id-ID')} IDR\n`;
+    });
+    pesan += `Subtotal: ${g.total.toLocaleString('id-ID')} IDR\n`;
+    pesan += `------------------------------\n`;
+  }
 
   const nomorWA = "628156816150";
-  const url = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`;
-
-  window.open(url, "_blank");
+  window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`, "_blank");
 }
+
+/* ===================== DARK MODE ===================== */
+document.getElementById("darkToggleBtn").onclick = () => {
+  const isDark = document.body.classList.contains("dark");
+  if (isDark) {
+    document.body.classList.remove("dark");
+    localStorage.removeItem("prefDark");
+  } else {
+    document.body.classList.add("dark");
+    localStorage.setItem("prefDark", "1");
+  }
+};
+if (localStorage.getItem("prefDark")) document.body.classList.add("dark");
+
+/* init render */
+renderLaporan();
+updateTabelKeranjang();
 </script>
 
 </body>
