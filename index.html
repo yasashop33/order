@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pemesanan Oleh-Oleh Yasa Shop (Transfer ke Rekening Mandiri atas nama Bambang Yulistriono 1350021365851)</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background:#fff7e6; }
+    h1 { color:#d35400; }
+    form, .report, .keranjang { background:#ffffff; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1); margin-bottom:20px; }
+    label { display:block; margin-top:10px; font-weight:bold; }
+    input, select { width:100%; padding:8px; margin-top:5px; border-radius:5px; border:1px solid #ccc; }
+    table { width:100%; border-collapse: collapse; margin-top:20px; }
+    table, th, td { border:1px solid #ccc; }
+    th, td { padding:10px; text-align:left; }
+    button { padding:10px 15px; background:#e67e22; border:none; color:white; font-weight:bold; border-radius:5px; cursor:pointer; margin-top:15px; }
+    button:hover { background:#d35400; }
+  </style>
+</head>
+<body>
+
+<h1>Form Pemesanan Oleh-Oleh Yasa Shop (Transfer ke Rekening Mandiri atas nama Bambang Yulistriono 1350021365851)</h1>
+
+<form id="orderForm">
+  <label>Nama</label>
+  <input type="text" id="nama" required />
+
+  <label>No HP</label>
+  <input type="text" id="hp" required />
+
+  <label>Kabupaten/Kota (Jawa Tengah)</label>
+  <select id="kabupaten" required>
+    <option value="">-- Pilih --</option>
+    <option>00 - PROVINSI</option>
+    <option>01 - CILACAP</option>
+    <option>02 - BANYUMAS</option>
+    <option>03 - PURBALINGGA</option>
+    <option>04 - BANJARNEGARA</option>
+    <option>05 - KEBUMEN</option>
+    <option>06 - PURWOREJO</option>
+    <option>07 - WONOSOBO</option>
+    <option>08 - MAGELANG</option>
+    <option>09 - BOYOLALI</option>
+    <option>10 - KLATEN</option>
+    <option>11 - SUKOHARJO</option>
+    <option>12 - WONOGIRI</option>
+    <option>13 - KARANGANYAR</option>
+    <option>14 - SRAGEN</option>
+    <option>15 - GROBOGAN</option>
+    <option>16 - BLORA</option>
+    <option>17 - REMBANG</option>
+    <option>18 - PATI</option>
+    <option>19 - KUDUS</option>
+    <option>20 - JEPARA</option>
+    <option>21 - DEMAK</option>
+    <option>22 - SEMARANG</option>
+    <option>23 - TEMANGGUNG</option>
+    <option>24 - KENDAL</option>
+    <option>25 - BATANG</option>
+    <option>26 - PEKALONGAN</option>
+    <option>27 - PEMALANG</option>
+    <option>28 - TEGAL</option>
+    <option>29 - BREBES</option>
+    <option>71 - KOTA MAGELANG</option>
+    <option>72 - KOTA SURAKARTA</option>
+    <option>73 - KOTA SALATIGA</option>
+    <option>74 - KOTA SEMARANG</option>
+    <option>75 - KOTA PEKALONGAN</option>
+    <option>76 - KOTA TEGAL</option>
+  </select>
+
+  <label>Produk</label>
+  <select id="produk" required></select>
+
+  <label>Jumlah</label>
+  <input type="number" id="jumlah" min="1" value="1" required />
+
+  <label>Total Harga</label>
+  <input type="text" id="total" readonly />
+
+  <button type="button" onclick="tambahKeKeranjang()">Tambah Produk ke Keranjang</button>
+</form>
+
+<div class="keranjang">
+  <h2>Keranjang Produk</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Produk</th>
+        <th>Jumlah</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody id="keranjangBody"></tbody>
+  </table>
+
+  <button type="button" onclick="simpanKeLaporan()">Submit</button>
+</div>
+
+<div class="report">
+  <h2>Laporan Pesanan</h2>
+
+  <table id="tabelReport">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>HP</th>
+        <th>Kabupaten</th>
+        <th>Produk</th>
+        <th>Jumlah</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <button onclick="downloadCSV()">Download CSV</button>
+</div>
+
+<script>
+const produkList = {
+  "Abon Cokro Manis 100gr": 36000,
+  "Abon Cokro Pedas 100gr": 38000,
+  "Abon Cokro Manis 250gr": 80000,
+  "Abon Cokro Pedas 250gr": 85000,
+  "Srundeng Manis 100gr": 25000,
+  "Srundeng Pedas 100gr": 27000,
+  "Karak Bratan Cokro": 20000,
+  "Usus Tepung Cokro": 35000,
+  "Paru Remuk 250gr": 38000,
+  "Belut Tepung": 33000,
+  "Peyek Cokro": 25000,
+  "Bagelan Cokro": 28000,
+  "Bluder Cokro": 105000,
+  "Sale Goreng Cokro": 25000,
+  "Semprong Cokro": 25000,
+  "Ledre": 25000,
+  "Empal Prasojo Manis": 55000,
+  "Empal Prasojo Pedas": 60000,
+  "Brambang Cokro": 40000,
+  "Wedang Bajigur": 15000,
+  "Wedang Sekoteng": 15000,
+  "Wedang Bandrek": 15000
+};
+
+const produkSelect = document.getElementById("produk");
+for (let p in produkList) {
+  let opt = document.createElement("option");
+  opt.value = p;
+  opt.textContent = `${p} - ${produkList[p].toLocaleString("id-ID")} IDR`;
+  produkSelect.appendChild(opt);
+}
+
+function hitungTotal() {
+  const harga = produkList[produkSelect.value] || 0;
+  const jumlah = parseInt(document.getElementById("jumlah").value) || 1;
+  document.getElementById("total").value =
+    (harga * jumlah).toLocaleString("id-ID");
+}
+
+produkSelect.onchange = hitungTotal;
+document.getElementById("jumlah").oninput = hitungTotal;
+
+let keranjang = [];
+
+function tambahKeKeranjang() {
+  hitungTotal();
+
+  const produk = produkSelect.value;
+  const jumlah = parseInt(document.getElementById("jumlah").value);
+  const harga = produkList[produk];
+  const total = harga * jumlah;
+
+  keranjang.push({ produk, jumlah, total });
+
+  updateTabelKeranjang();
+}
+
+function updateTabelKeranjang() {
+  const tbody = document.getElementById("keranjangBody");
+  tbody.innerHTML = "";
+
+  keranjang.forEach((item) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${item.produk}</td>
+      <td>${item.jumlah}</td>
+      <td>${item.total.toLocaleString("id-ID")}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function simpanKeLaporan() {
+  if (keranjang.length === 0) {
+    alert("Keranjang masih kosong!");
+    return;
+  }
+
+  const nama = document.getElementById("nama").value;
+  const hp = document.getElementById("hp").value;
+  const kab = document.getElementById("kabupaten").value;
+
+  const tbody = document.querySelector("#tabelReport tbody");
+
+  keranjang.forEach((item) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${nama}</td>
+      <td>${hp}</td>
+      <td>${kab}</td>
+      <td>${item.produk}</td>
+      <td>${item.jumlah}</td>
+      <td>${item.total.toLocaleString("id-ID")}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // ================= KIRIM DATA KE GOOGLE SPREADSHEET =================
+  fetch("https://script.google.com/macros/s/AKfycbywWqm73OQDS8kCvCMmQnFIfXBO-cfj2ePFDpJOB9K6C1dP-NxykA1zfSS7JdPldFnd4A/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      nama: nama,
+      hp: hp,
+      kabupaten: kab,
+      pesanan: keranjang
+    })
+  });
+
+  keranjang = [];
+  updateTabelKeranjang();
+  alert("Pesanan berhasil disimpan dan dikirim ke Spreadsheet!");
+}
+
+function downloadCSV() {
+  let csv = "Nama,HP,Kabupaten,Produk,Jumlah,Total\n";
+
+  const rows = document.querySelectorAll("#tabelReport tbody tr");
+  rows.forEach((r) => {
+    const cols = r.querySelectorAll("td");
+    const data = Array.from(cols).map((c) => c.innerText);
+    csv += data.join(",") + "\n";
+  });
+
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "report_pesanan.csv";
+  a.click();
+}
+</script>
+
+</body>
+</html>
